@@ -44,13 +44,6 @@ class AdminController extends Controller
     public function add(Request $request)
     {
         $categories = Categories::getCategories();
-        //if($request->method() == 'POST') {
-        //    dd($request->all());
-        //}
-
-        //if(request()->method() == 'POST') {
-        //    dd(request()->all());
-        //}
 
         if ($request->method() == 'POST') {
 
