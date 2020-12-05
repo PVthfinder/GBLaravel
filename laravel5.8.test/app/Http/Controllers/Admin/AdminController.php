@@ -7,6 +7,7 @@ use App\Models\Categories;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Session;
+use Storage;
 
 class AdminController extends Controller
 {
@@ -27,7 +28,7 @@ class AdminController extends Controller
         $news = News::getNewsByCategoryId($id);
         $category = Categories::getCategoryById($id);
 
-        return view('admin.news', ['news' => $news, 'title' => $category['title']]);
+        return view('admin.news', ['news' => $news, 'title' => $category->title]);
     }
 
     public function show($id, $news_id)
@@ -37,7 +38,7 @@ class AdminController extends Controller
 
         return view(
             'admin.show',
-            ['category' => $category, 'one_news' => $one_news, 'title' => $category['title'] . ': ' . $one_news['title']]
+            ['category' => $category, 'one_news' => $one_news, 'title' => $category->title . ': ' . $one_news->title]
         );
     }
 
@@ -53,11 +54,15 @@ class AdminController extends Controller
             $errors[] = 'Заголовок не должен быть пустым';
             $errors[] = 'Новость должна содержать описание';
 
-            $req_arr = $request->except('_token', 'reg');
-            $check = $request->get('is_privat');
-            if (!$check) {
-                $privat = ['is_privat' => "0"];
-                $req_arr += $privat;
+            $req_arr = $request->except('_token', 'image');
+            
+            if (!$request->get('is_private')) {
+                $req_arr['is_private'] = '0';
+            }
+
+            if($request->hasFile('image')) {
+                $path = Storage::putFile('public', $request->file('image'));
+                $req_arr['image'] = Storage::url($path);
             }
 
             foreach ($req_arr as $key => $value) {
@@ -67,20 +72,7 @@ class AdminController extends Controller
                 }
             }
 
-            $news = News::decodeNews();
-
-            $max = 0;
-
-            foreach ($news as $item) {
-                if ($item['id'] > $max) {
-                    $max = $item['id'];
-                }
-            }
-
-            $id = ['id' => $max];
-            $req_arr = $id + $req_arr;
-            $news[] = $req_arr;
-            News::encodeNews($news);
+            News::addNews($req_arr);
 
             return redirect()->route('admin.add');
         }
@@ -90,16 +82,7 @@ class AdminController extends Controller
 
     public function delete($id)
     {
-        $news = News::decodeNews();
-
-        foreach ($news as $item) {
-            if ($item['id'] == $id) {
-                $index = array_search($item, $news);
-                array_splice($news, $index, 1);
-            }
-        }
-
-        News::encodeNews($news);
+        News::deleteNews($id);
 
         return redirect()->route('admin.admin');
     }

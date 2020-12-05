@@ -15,7 +15,7 @@
 
                     @foreach($categories as $item)
                     <li>
-                        <a href="categories/{{ $item['id'] }}">{{ $item['title'] }}</a>
+                        <a href="categories/{{ $item->id }}">{{ $item->title }}</a>
                     </li>
                     @endforeach
 

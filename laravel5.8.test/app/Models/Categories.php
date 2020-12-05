@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use DB;
 
 class Categories
 {
-    private const CATEGORIES = [
+    /*private const CATEGORIES = [
         [
             'id' => 1,
             'title' => 'Политика'
@@ -26,17 +27,19 @@ class Categories
             'id' => 5,
             'title' => 'Технологии'
         ]
-    ];
+    ];*/
 
     public static function getCategories() {
-        return self::CATEGORIES;
+        return DB::select('select * from categories');
     }
 
     public static function getCategoryById($id) {
-        foreach (self::getCategories() as $item) {
+        /*foreach (self::getCategories() as $item) {
             if ($item['id'] == $id) {
                 return $item;
             }
-        }
+        }*/
+
+        return  DB::selectOne('select * from categories where id = :id', ['id' => $id]);
     }
 }

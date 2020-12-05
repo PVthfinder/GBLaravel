@@ -11,6 +11,8 @@
             <div class="card">
                 <div class="card-header">{{$title}}</div>
 
+                <img class="card-img-top" src="{{ empty($one_news->image) ? 'https://via.placeholder.com/500' : $one_news->image }}" alt="Card image cap">
+
                 <div class="card-body">
 
                     <p><?= $one_news['text'] ?></p>
@@ -19,7 +21,7 @@
 
             </div>
 
-            <a href="/categories/{{ $category['id'] }}">Вернуться к новостям</a>
+            <a href="/categories/{{ $category->id }}">Вернуться к новостям</a>
         </div>
     </div>
 </div>

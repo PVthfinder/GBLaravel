@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use PhpParser\Node\Expr\FuncCall;
 use Storage;
+use DB;
 
 class News
 {
@@ -130,34 +132,87 @@ class News
     ];*/
 
     public static function getNews() {
-        return self::decodeNews();
+        return DB::select('select * from news');
     }
 
-    public static function encodeNews($array) {
+    /*public static function encodeNews($array) {
         $jsonNews = json_encode($array);
         return Storage::put('news.json', $jsonNews);
     }
 
     public static function decodeNews() {
         return json_decode(Storage::get('news.json'), true);
-    }
+    }*/
 
     public static function getNewsByCategoryId($id) {
-        $news_by_id =[];
-        foreach(self::getNews() as $item) {
-            if ($item['category_id'] == $id) {
-                $news_by_id[] = $item;
-            }
-        }
+        //$news_by_id =[];
+        //foreach(self::getNews() as $item) {
+          //  if ($item->category_id == $id) {
+            //    $news_by_id[] = $item;
+            //}
+        //}
 
-        return $news_by_id;
+        return DB::table('news')
+            ->where('category_id', '=', $id)
+            ->get();
+        
+    }
+
+    public static function getNewsBySlug($slug) {
+        $news = DB::table('news')
+        ->join('categories','news.category_id', '=', 'categories.id')
+        ->select('news.*', 'categories.title')
+        ->where('categories.title', '=', $slug)
+        ->get();
+
+        return $news;        
     }
 
     public static function getNewsById($id) {
-        foreach (self::getNews() as $item) {
-            if ($item['id'] == $id) {
-                return $item;
+        //foreach (self::getNews() as $item) {
+          //  if ($item->id == $id) {
+            //    return $item;
+            //}
+        //}
+        return  DB::selectOne('select * from news where id = :id', ['id' => $id]);
+    }
+
+    public static function addNews(array $array) {
+        /*$news = self::decodeNews();
+
+        $max_id = 0;
+
+        foreach ($news as $item) {
+            if ($item['id'] > $max_id) {
+                $max_id = $item['id'];
             }
         }
+
+        $id = ['id' => $max_id+1];
+        $array = $id + $array;*/
+
+        if (!isset($array['image'])) {
+            $array['image'] = '';
+        }
+
+        //$news[] = $array;
+        //self::encodeNews($news);
+
+        return DB::table('news')->insert($array);
+    }
+
+    public static function deleteNews($id) {
+        /*$news = self::decodeNews();
+
+        foreach ($news as $item) {
+            if ($item['id'] == $id) {
+                $index = array_search($item, $news);
+                array_splice($news, $index, 1);
+            }
+        }
+
+        self::encodeNews($news);*/
+
+        DB::table('news')->where('id', '=', $id)->delete();
     }
 }

@@ -22,13 +22,19 @@ class NewsController extends BaseCalcController
         $news = News::getNewsByCategoryId($id);
         $category = Categories::getCategoryById($id);
 
-        return view('news.news', ['news' => $news, 'title' => $category['title']]);
+        return view('news.news', ['news' => $news, 'title' => $category->title]);
+    }
+
+    public function slug($slug) {
+        $news = News::getNewsBySlug($slug);
+
+        return view('news.news', ['news' => $news, 'title' => $slug]);
     }
 
     public function show($id, $news_id) {
         $one_news = News::getNewsById($news_id);
         $category = Categories::getCategoryById($id);
 
-        return view('news.show', ['category' => $category, 'one_news' => $one_news, 'title' => $category['title'] . ': ' . $one_news['title']]);
+        return view('news.show', ['category' => $category, 'one_news' => $one_news, 'title' => $category->title . ': ' . $one_news->title]);
     }
 }
