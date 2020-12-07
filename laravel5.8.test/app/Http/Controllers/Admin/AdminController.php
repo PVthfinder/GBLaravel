@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\News1;
 use App\Models\News;
 use App\Models\Categories;
 use App\Http\Controllers\Controller;
@@ -16,36 +17,25 @@ class AdminController extends Controller
         return view('admin.index', ['title' => 'Админка']);
     }
 
-    public function categories()
+    /*public function categories()
     {
         $categories = Categories::getCategories();
 
         return view('admin.categories', ['categories' => $categories, 'title' => 'Категории новостей']);
+    }*/
+
+    public function news()
+    {
+        //$category = Categories::getCategoryById($id);
+        //$news = News1::getNewsByCategoryId($id);
+        //$news = News::all();
+        $news = News::paginate(8);
+
+        return view('admin.news', ['news' => $news, 'title' => 'Все новости']);
     }
 
-    public function news($id)
+    public function add(News $news, Request $request)
     {
-        $news = News::getNewsByCategoryId($id);
-        $category = Categories::getCategoryById($id);
-
-        return view('admin.news', ['news' => $news, 'title' => $category->title]);
-    }
-
-    public function show($id, $news_id)
-    {
-        $one_news = News::getNewsById($news_id);
-        $category = Categories::getCategoryById($id);
-
-        return view(
-            'admin.show',
-            ['category' => $category, 'one_news' => $one_news, 'title' => $category->title . ': ' . $one_news->title]
-        );
-    }
-
-    public function add(Request $request)
-    {
-        $categories = Categories::getCategories();
-
         if ($request->method() == 'POST') {
 
             $request->flash();
@@ -72,17 +62,45 @@ class AdminController extends Controller
                 }
             }
 
-            News::addNews($req_arr);
+            $news->fill($req_arr)->save();
 
-            return redirect()->route('admin.add');
+            return redirect()->route('admin.news.add');
         }
 
-        return view('admin.add', ['categories' => $categories, 'title' => 'Добавление новости']);
+        return view('admin.add', ['categories' => Categories::all(), 'news' => $news]);
+    }
+
+    public function edit(News $news, Request $request)
+    {
+        //$news = News::findOrFail($id);
+        if ($request->method() == 'POST') {
+
+            $request->flash();
+
+            $req_arr = $request->except('_token', 'image');
+            
+            if (!$request->get('is_private')) {
+                $req_arr['is_private'] = '0';
+            }
+
+            $req_arr['image'] = '';
+
+            if($request->hasFile('image')) {
+                $path = Storage::putFile('public', $request->file('image'));
+                $req_arr['image'] = Storage::url($path);
+            }
+
+            $news->fill($req_arr)->save();
+
+            return redirect()->route('admin.news.edit', $news);
+        }
+
+        return view('admin.add', ['categories' => Categories::all(), 'news' => $news]);
     }
 
     public function delete($id)
     {
-        News::deleteNews($id);
+        News::destroy($id);
 
         return redirect()->route('admin.admin');
     }

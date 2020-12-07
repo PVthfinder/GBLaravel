@@ -16,12 +16,14 @@
             <div class="card-body">
                 <h5 class="card-title">{{ $item->title }}</h5>
                 <p class="card-text">{{ $item->spoiler }}</p>
-                <a href="/categories/{{ $item->category_id }}/{{ $item->id }}" class="card-link">Редактировать (пока просто содержимое)</a>
+                <a href="{{ route('admin.news.edit', $item) }}" class="card-link">Редактировать</a>
                 <a href="/admin/delete/{{ $item->id }}" class="card-link">Удалить</a>
             </div>
         </div>
         @empty <h3>Новостей нет</h3>
         @endforelse
+
+        {{ $news->links() }}
     </div>
 </div>
 @endsection

@@ -17,11 +17,11 @@ class CategoriesSeeder extends Seeder
     private function getData() {
 
         $data = [
-            ['title' => 'Политика'],
-            ['title' => 'Экономика'],
-            ['title' => 'Общество'],
-            ['title' => 'Спорт'],
-            ['title' => 'Технологии'],
+            ['title' => 'Политика', 'slug' => 'politics'],
+            ['title' => 'Экономика', 'slug' => 'economics'],
+            ['title' => 'Общество', 'slug' => 'social'],
+            ['title' => 'Спорт', 'slug' => 'sport'],
+            ['title' => 'Технологии', 'slug' => 'technologies'],
         ];
         
         return $data;

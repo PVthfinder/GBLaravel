@@ -16,7 +16,7 @@
                 </div>
             </div>
             <a class="nav-link" href="/admin/add">Добавить новость</a>
-            <a class="nav-link" href="/admin/categories">Администрирование новостей</a>
+            <a class="nav-link" href="/admin/news">Администрирование новостей</a>
         </div>
     </div>
 </div>

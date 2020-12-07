@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-@parent - {{$title}}
+@parent - {{ $news->first()->category->title }}
 @endsection
 
 @section('content')
 <div class="container">
-    <div class="card-header">{{$title}}</div>
+    <div class="card-header">{{ $news->first()->category->title }}</div>
 
     <div class="row">
         @forelse($news as $item)
@@ -23,6 +23,8 @@
         @empty <h3>Новостей нет</h3>
         @endforelse
     </div>
+
+    {{ $news->links() }}
 
 </div>
 @endsection

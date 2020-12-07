@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\News;
 use Illuminate\Database\Seeder;
 
 class NewsSeeder extends Seeder
@@ -11,10 +12,13 @@ class NewsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('news')->insert($this->getData());
+        //DB::table('news')->insert($this->getData());
+
+        $news = factory(News::class)->make();
+        dd($news);
     }
 
-    private function getData() {
+    /*private function getData() {
         $faker = Faker\Factory::create();
 
         $data = [];
@@ -31,5 +35,5 @@ class NewsSeeder extends Seeder
         }
         
         return $data;
-    }
+    }*/
 }

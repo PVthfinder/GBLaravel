@@ -25,18 +25,18 @@ Route::group(['prefix' => '/categories', 'as' => 'categories.'], function () {
     Route::get('/', 'NewsController@index')->name('index');
     Route::get('/{id}', 'NewsController@news')->where('id', '[0-9]+')->name('news');
     Route::get('/{slug}', 'NewsController@slug')->name('slug');
-    Route::get('/{id}/{news_id}', 'NewsController@show')->name('show');
+    Route::get('/{id}/{news}', 'NewsController@show')->name('show');
     //Route::get('/{id}/comments/{comment?}', 'NewsController@comments')->name('comments');
 });
 
 Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
     Route::get('/', 'AdminController@index')->name('admin');
-    Route::match(['get', 'post'], '/add', 'AdminController@add')->name('add');
+    Route::match(['get', 'patch'], '/add', 'AdminController@add')->name('add');
     Route::get('/delete/{id}', 'AdminController@delete')->name('delete');
-    Route::group(['prefix' => '/categories', 'as' => 'categories.'], function () {
-        Route::get('/', 'AdminController@categories')->name('categories');
-        Route::get('/{id}', 'AdminController@news')->where('id', '[0-9]+')->name('news');
-        Route::get('/{id}/{news_id}', 'AdminController@show')->name('show');
+    Route::group(['prefix' => '/news', 'as' => 'news.'], function () {
+        Route::get('/', 'AdminController@news')->name('news');
+        Route::match(['get', 'post'], '/edit/{news}', 'AdminController@edit')->name('edit');
+        Route::get('/{news_id}', 'AdminController@show')->name('show');
         //Route::get('/{id}/comments/{comment?}', 'NewsController@comments')->name('comments');
     });
 });
