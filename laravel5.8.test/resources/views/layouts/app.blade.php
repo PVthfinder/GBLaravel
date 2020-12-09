@@ -26,6 +26,13 @@
         @include('_partials.header')
 
         <main class="py-4">
+
+            <div class="row justify-content-end">
+                <div class="col-4">
+                    @include('admin._partials.flash-message')
+                </div>
+            </div>
+
             @yield('content')
         </main>
         

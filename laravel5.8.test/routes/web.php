@@ -30,15 +30,17 @@ Route::group(['prefix' => '/categories', 'as' => 'categories.'], function () {
 });
 
 Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
-    Route::get('/', 'AdminController@index')->name('admin');
-    Route::match(['get', 'patch'], '/add', 'AdminController@add')->name('add');
+    Route::get('/', 'IndexController@index')->name('index');
+    Route::resource('news', 'NewsController');
+
+    /*Route::match(['get', 'post'], '/add', 'AdminController@add')->name('add');
     Route::get('/delete/{id}', 'AdminController@delete')->name('delete');
     Route::group(['prefix' => '/news', 'as' => 'news.'], function () {
         Route::get('/', 'AdminController@news')->name('news');
         Route::match(['get', 'post'], '/edit/{news}', 'AdminController@edit')->name('edit');
         Route::get('/{news_id}', 'AdminController@show')->name('show');
         //Route::get('/{id}/comments/{comment?}', 'NewsController@comments')->name('comments');
-    });
+    });*/
 });
 
 Route::get('/about', function () {

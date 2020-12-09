@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Categories;
 use App\Models\News;
 use Faker\Generator as Faker;
 
@@ -15,3 +16,10 @@ $factory->define(News::class, function (Faker $faker) {
         'text' => $faker->sentence(rand(100, 300))
     ];
 });
+
+$factory->state(News::class, 'withPrivateFalseState', ['is_private' => 0]);
+
+
+$factory->state(News::class, 'withCategory', ['category_id' => function () {
+    return factory(Categories::class)->create();
+}]);
