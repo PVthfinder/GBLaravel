@@ -4,13 +4,15 @@ namespace Tests\Feature;
 
 use App\Models\News;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AdminNewsTest extends TestCase
 {
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
+    use DatabaseMigrations;
 
     /**
      * A basic feature test example.
@@ -19,7 +21,7 @@ class AdminNewsTest extends TestCase
      */
     public function testExample()
     {
-        $response = $this->get('/admin/categories');
+        $response = $this->get(route('admin.news.index'));
 
         $response->assertStatus(200);
     }
@@ -70,7 +72,7 @@ class AdminNewsTest extends TestCase
 
         $response->assertStatus(302);
 
-        $this->assertDatabaseHas('news', $news->toArray());
+        $this->assertDatabaseMissing('news', $news->toArray());
         $this->assertDatabaseHas('news', $data);
     }
 }

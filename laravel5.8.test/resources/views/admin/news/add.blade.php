@@ -25,17 +25,34 @@
                         
                         @csrf
 
-                        <p>Название новости</p><input class='form_item' type='text' name='title' value="{{ old('title') }}"><br><br>
+                        <p>Название новости</p><input dusk="title" class='form_item @error('title') is-invalid @enderror' type='text' name='title' value="{{ old('title') }}">
+                        @foreach ($errors->get('title') as $error)
+                            <div class="text-danger">{{ $error }}</div>
+                        @endforeach
+                        <br><br>
+
                         <select name="category_id">
                             @foreach($categories as $item)
                             <option value="{{ $item->id }}" @if(old('category_id')==$item->id) selected @endif>{{ $item->title }}</option>
                             @endforeach
                         </select><br><br>
-                        <p>Краткое описание</p><input class='form_item' type='text' name='spoiler' value="{{ old('spoiler') }}"><br><br>
-                        <p>Описание новости</p><textarea class='form_item' name='text'>{{ old('text') }}</textarea><br><br>
+                        
+                        <p>Краткое описание</p><input dusk="spoiler" class='form_item @error('spoiler') is-invalid @enderror' type='text' name='spoiler' value="{{ old('spoiler') }}">
+                        @foreach ($errors->get('spoiler') as $error)
+                            <div class="text-danger">{{ $error }}</div>
+                        @endforeach
+                        <br><br>
+
+                        <p>Описание новости</p><textarea dusk="text" class='form_item @error('text') is-invalid @enderror' name='text'>{{ old('text') }}</textarea>
+                        @foreach ($errors->get('text') as $error)
+                            <div class="text-danger">{{ $error }}</div>
+                        @endforeach
+                        <br><br>
+                        
                         <div class="form-group">
                             <input name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
                         </div><br>
+
                         <div class="form-check">
                             <input name="is_private" class="form-check-input" id="is_private_false" type="radio" value="0" @if(old('is_private')) checked @endif>
                             <label class="form-check-label" for="is_private_false">
@@ -48,7 +65,8 @@
                                 Приватная
                             </label>
                         </div><br><br>
-                        <p><input type='submit' class='btn' value='Добавить'></p>
+
+                        <p><input dusk="submit" type='submit' class='btn' value='Добавить'></p>
                     </form>
 
                 </div>

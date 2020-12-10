@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\News;
 use App\Models\Categories;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Requests\StoreNewsRequest;
 use Illuminate\Http\Request;
 use Session;
 use Storage;
@@ -28,11 +30,11 @@ class NewsController extends Controller
         return view('admin.news.add', ['categories' => Categories::all()]);
     }
 
-    public function store(Request $request)
+    public function store(StoreNewsRequest $request, News $news)
     {
-        $news = News::create($request->all());
+        $news->create($request->all());
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $path = Storage::putFile('public', $request->file('image'));
             $news->image = Storage::url($path);
             $news->save();
@@ -46,11 +48,13 @@ class NewsController extends Controller
         return view('admin.news.edit', ['categories' => Categories::all(), 'news' => $news]);
     }
 
-    public function update(Request $request, News $news)
+    public function update(UpdateNewsRequest $request, News $news)
     {
+        //$this->validate($request, News::rules());
+
         $news->update($request->all());
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $path = Storage::putFile('public', $request->file('image'));
             $news->image = Storage::url($path);
             $news->save();
