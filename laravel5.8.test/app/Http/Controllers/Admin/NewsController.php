@@ -30,7 +30,7 @@ class NewsController extends Controller
         return view('admin.news.add', ['categories' => Categories::all()]);
     }
 
-    public function store(StoreNewsRequest $request, News $news)
+    public function store(Request $request, News $news)
     {
         $news->create($request->all());
 

@@ -7,6 +7,7 @@ use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Models\News;
 use App\Models\Categories;
+use DB;
 
 class AdminNewsDuskTest extends DuskTestCase
 {
@@ -18,6 +19,11 @@ class AdminNewsDuskTest extends DuskTestCase
      */
     public function admin_can_edit_news()
     {
+
+        dump(app()->environment());
+        dump(DB::connection()->getName());
+        dd(DB::connection()->getDatabaseName());
+
         $news = factory(News::class)->states(['withCategory', 'withPrivateFalseState'])->create();
 
         $this->browse(function (Browser $browser) use ($news) {

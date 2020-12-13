@@ -23,7 +23,7 @@ class News extends Model
         return $this->belongsTo('App\Models\Categories','category_id','id');
     }
 
-    /*public static function rules() {
+    public static function rules() {
         return [
             'category_id' => 'required|integer|exists:categories,id',
             'image' => 'image',
@@ -32,5 +32,5 @@ class News extends Model
             'spoiler' => 'required',
             'text' => 'required'
         ];
-    }*/
+    }
 }

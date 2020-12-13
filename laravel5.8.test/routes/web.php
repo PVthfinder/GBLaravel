@@ -29,9 +29,14 @@ Route::group(['prefix' => '/categories', 'as' => 'categories.'], function () {
     //Route::get('/{id}/comments/{comment?}', 'NewsController@comments')->name('comments');
 });
 
-Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => '/admin', 
+                'namespace' => 'Admin', 
+                'as' => 'admin.', 
+                'middleware' => ['auth', 'role:1']
+            ], function () {
     Route::get('/', 'IndexController@index')->name('index');
-    Route::resource('news', 'NewsController');
+    Route::resource('news', 'NewsController', ['middleware' => 'validation']);
+    Route::resource('users', 'UserController');
 
     /*Route::match(['get', 'post'], '/add', 'AdminController@add')->name('add');
     Route::get('/delete/{id}', 'AdminController@delete')->name('delete');
@@ -48,6 +53,10 @@ Route::get('/about', function () {
 })->name('about');
 
 Auth::routes();
+Route::get('register', function() {
+    return redirect();
+});
+//Route::redirect('register', 301); по-другому
 
 Route::get('/home', 'HomeController@index')->name('home');
 
