@@ -16,7 +16,6 @@
                 <user-edit-component
                     :user="{{ json_encode($user) }}"
                 ></user-edit-component>
-                <example-component></example-component>
 
             </div>
         </div>

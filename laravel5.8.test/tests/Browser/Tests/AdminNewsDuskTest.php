@@ -20,9 +20,9 @@ class AdminNewsDuskTest extends DuskTestCase
     public function admin_can_edit_news()
     {
 
-        dump(app()->environment());
-        dump(DB::connection()->getName());
-        dd(DB::connection()->getDatabaseName());
+        //dump(app()->environment());
+        //dump(DB::connection()->getName());
+        //dd(DB::connection()->getDatabaseName());
 
         $news = factory(News::class)->states(['withCategory', 'withPrivateFalseState'])->create();
 

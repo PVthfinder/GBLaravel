@@ -54,7 +54,7 @@ Route::get('/about', function () {
 
 Auth::routes();
 Route::get('register', function() {
-    return redirect();
+    return redirect('register', 301);
 });
 //Route::redirect('register', 301); по-другому
 
