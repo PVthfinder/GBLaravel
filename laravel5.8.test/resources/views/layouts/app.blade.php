@@ -15,7 +15,9 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">    
+    <link href="/path/to/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/path/to/css/bootstrap-social.css" />
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

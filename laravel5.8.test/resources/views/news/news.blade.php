@@ -10,7 +10,7 @@
 
     <div class="row">
         @forelse($news as $item)
-        @if (!$item->is_private)
+        @if (!$item->is_private || Auth::id())
         <div class="card col-12 col-md-3" style="width: 18rem;">
             <img class="card-img-top" src="{{ empty($item->image) ? 'https://via.placeholder.com/200' : $item->image }}" alt="Card image cap">
             <div class="card-body">

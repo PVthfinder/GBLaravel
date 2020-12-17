@@ -37,6 +37,7 @@ Route::group(['prefix' => '/admin',
     Route::get('/', 'IndexController@index')->name('index');
     Route::resource('news', 'NewsController', ['middleware' => 'validation']);
     Route::resource('users', 'UserController');
+    Route::get('/parser', 'ParserController@index')->name('parser.index');
 
     /*Route::match(['get', 'post'], '/add', 'AdminController@add')->name('add');
     Route::get('/delete/{id}', 'AdminController@delete')->name('delete');
@@ -52,13 +53,23 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Auth::routes();
+Auth::routes(['register' => false]);
+
+/* "жесткий" способ убрать регистрацию
 Route::get('register', function() {
     return redirect('register', 301);
-});
+});*/ 
 //Route::redirect('register', 301); по-другому
 
+Route::get('/auth/vk', 'Auth\LoginController@authVk');
+Route::get('/auth/vk/response', 'Auth\LoginController@responseVk');
+
+Route::get('/auth/fb', 'Auth\LoginController@authFb');
+Route::get('/auth/fb/response', 'Auth\LoginController@responseFb');
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/calculator', 'CalculatorController@index')->name('calc');
 
 Route::get('storage/{filename}', function ($filename) {
     $path = storage_path('app/public/' . $filename);

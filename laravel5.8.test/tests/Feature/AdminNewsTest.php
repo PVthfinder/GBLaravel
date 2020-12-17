@@ -55,7 +55,11 @@ class AdminNewsTest extends TestCase
 
         $faker = \Faker\Factory::create('ru_RU');
 
+        $user = factory(User::class)->state('withAdminRole')->create();
         $news = factory(News::class)->states(['withCategory', 'withPrivateFalseState'])->create();
+        
+        $this->actingAs($user);
+        
         $newTitle = $faker->sentence(rand(3,5));
         $newSpoiler = $faker->sentence(rand(10,30));
 

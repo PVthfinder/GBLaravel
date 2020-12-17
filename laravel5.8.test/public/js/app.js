@@ -1924,11 +1924,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user'],
+  props: ["initialUser"],
+  data: function data() {
+    return {
+      user: {
+        role: null
+      },
+      showSuccessMessage: false,
+      successMessage: '',
+      showErrorMessage: false,
+      errorMessage: ''
+    };
+  },
   mounted: function mounted() {
+    this.user = this.initialUser;
     console.log(this.user);
-    console.log('Component mounted.');
+    console.log("Component mounted.");
+  },
+  methods: {
+    send: function send() {
+      var _this = this;
+
+      axios.post('/api/admin/users/edit/' + this.user.id + this.user).then(function (response) {
+        _this.showSuccessMessage = true;
+        _this.successMessage = 'Успешно отредактировано!';
+        console.log(response.data);
+      });
+      console.log(this.user);
+    }
   }
 });
 
@@ -37557,32 +37591,81 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("User Edit Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    Привет из компонента Vue\n                "
-              )
-            ])
-          ])
+  return _c("div", { staticClass: "container" }, [
+    _vm.showSuccessMessage
+      ? _c("div", { staticClass: "alert alert-success alert-block" }, [
+          _c(
+            "button",
+            {
+              staticClass: "close",
+              attrs: { type: "button", "data-dismiss": "alert" }
+            },
+            [_vm._v("x")]
+          ),
+          _vm._v(" "),
+          _c("strong", [_vm._v(_vm._s(_vm.successMessage))])
         ])
-      ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.showErrorMessage
+      ? _c("div", { staticClass: "alert alert-danger alert-block" }, [
+          _c(
+            "button",
+            {
+              staticClass: "close",
+              attrs: { type: "button", "data-dismiss": "alert" }
+            },
+            [_vm._v("x")]
+          ),
+          _vm._v(" "),
+          _c("strong", [_vm._v(_vm._s(_vm.errorMessage))])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _vm._v("\n    Привет " + _vm._s(_vm.user.name) + "\n\n    "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.user.role,
+              expression: "user.role"
+            }
+          ],
+          attrs: { name: "", id: "" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.user,
+                "role",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { value: "1" } }, [_vm._v("Администратор")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "0" } }, [_vm._v("Пользователь")])
+        ]
+      ),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.send } }, [_vm._v("Отправить")])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

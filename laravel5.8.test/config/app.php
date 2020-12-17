@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\CalcProvider;
+
 return [
 
     /*
@@ -166,6 +168,8 @@ return [
          * Package Service Providers...
          */
 
+        \SocialiteProviders\Manager\ServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -174,6 +178,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\CalcProvider::class,
 
     ],
 
