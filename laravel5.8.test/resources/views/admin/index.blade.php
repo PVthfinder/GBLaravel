@@ -15,8 +15,9 @@
                     Админка
                 </div>
             </div>
-            <a class="nav-link" href="/admin/add">Добавить новость</a>
-            <a class="nav-link" href="/admin/categories">Администрирование новостей</a>
+            <a class="nav-link" href="{{ route('admin.news.create') }}">Добавить новость</a>
+            <a class="nav-link" href="{{ route('admin.news.index') }}">Администрирование новостей</a>
+            <a class="nav-link" href="{{ route('admin.users.index') }}">Администрирование пользователей</a>
         </div>
     </div>
 </div>

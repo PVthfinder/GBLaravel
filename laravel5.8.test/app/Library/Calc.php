@@ -2,8 +2,9 @@
 
 namespace App\Library;
 
+use App\Library\Interfaces\CalcInterface;
 
-class Calc
+class Calc implements CalcInterface
 {
     protected $total;
 

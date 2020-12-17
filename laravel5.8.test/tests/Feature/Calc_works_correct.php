@@ -14,7 +14,7 @@ class Calc_works_correct extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function calc_works_correct()
     {
         $int = 56;
 

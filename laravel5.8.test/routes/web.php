@@ -24,26 +24,66 @@ Route::get('/', 'IndexController@index')->name('home');
 Route::group(['prefix' => '/categories', 'as' => 'categories.'], function () {
     Route::get('/', 'NewsController@index')->name('index');
     Route::get('/{id}', 'NewsController@news')->where('id', '[0-9]+')->name('news');
-    Route::get('/{id}/{news_id}', 'NewsController@show')->name('show');
+    Route::get('/{slug}', 'NewsController@slug')->name('slug');
+    Route::get('/{id}/{news}', 'NewsController@show')->name('show');
     //Route::get('/{id}/comments/{comment?}', 'NewsController@comments')->name('comments');
 });
 
-Route::group(['prefix' => '/admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
-    Route::get('/', 'AdminController@index')->name('admin');
-    Route::match(['get', 'post'], '/add', 'AdminController@add')->name('add');
+Route::group(['prefix' => '/admin', 
+                'namespace' => 'Admin', 
+                'as' => 'admin.', 
+                'middleware' => ['auth', 'role:1']
+            ], function () {
+    Route::get('/', 'IndexController@index')->name('index');
+    Route::resource('news', 'NewsController', ['middleware' => 'validation']);
+    Route::resource('users', 'UserController');
+    Route::get('/parser', 'ParserController@index')->name('parser.index');
+
+    /*Route::match(['get', 'post'], '/add', 'AdminController@add')->name('add');
     Route::get('/delete/{id}', 'AdminController@delete')->name('delete');
-    Route::group(['prefix' => '/categories', 'as' => 'categories.'], function () {
-        Route::get('/', 'AdminController@categories')->name('categories');
-        Route::get('/{id}', 'AdminController@news')->where('id', '[0-9]+')->name('news');
-        Route::get('/{id}/{news_id}', 'AdminController@show')->name('show');
+    Route::group(['prefix' => '/news', 'as' => 'news.'], function () {
+        Route::get('/', 'AdminController@news')->name('news');
+        Route::match(['get', 'post'], '/edit/{news}', 'AdminController@edit')->name('edit');
+        Route::get('/{news_id}', 'AdminController@show')->name('show');
         //Route::get('/{id}/comments/{comment?}', 'NewsController@comments')->name('comments');
-    });
+    });*/
 });
 
 Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Auth::routes();
+Auth::routes(['register' => false]);
+
+/* "жесткий" способ убрать регистрацию
+Route::get('register', function() {
+    return redirect('register', 301);
+});*/ 
+//Route::redirect('register', 301); по-другому
+
+Route::get('/auth/vk', 'Auth\LoginController@authVk');
+Route::get('/auth/vk/response', 'Auth\LoginController@responseVk');
+
+Route::get('/auth/fb', 'Auth\LoginController@authFb');
+Route::get('/auth/fb/response', 'Auth\LoginController@responseFb');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/calculator', 'CalculatorController@index')->name('calc');
+
+Route::get('storage/{filename}', function ($filename) {
+    $path = storage_path('app/public/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    dd($type);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
